@@ -1,8 +1,11 @@
 package com.github.jrry.blog.controller.admin;
 
+import com.github.jrry.blog.entity.ArticleEntity;
 import com.github.jrry.blog.entity.ImageEntity;
 import com.github.jrry.blog.service.CategoryService;
+import com.github.jrry.blog.utils.PaginationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +33,9 @@ public class ArticleManager {
 
     @GetMapping("/list")
     public String getArticles(Model model, @RequestParam(defaultValue = "0") int page) {
-        model.addAttribute("articles", articleService.getArticles(page));
+        Page<ArticleEntity> articles = articleService.getArticles(page);
+        model.addAttribute("articles", articles);
+        model.addAttribute("paginationNumbers", PaginationUtil.generateThreeNumbers(articles));
         return "admin/article-list";
     }
 
