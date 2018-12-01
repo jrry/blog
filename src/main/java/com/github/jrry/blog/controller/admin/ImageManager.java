@@ -1,9 +1,11 @@
 package com.github.jrry.blog.controller.admin;
 
+import com.github.jrry.blog.forms.groups.IdGroup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.github.jrry.blog.forms.ImageForm;
 import com.github.jrry.blog.service.ImageService;
@@ -48,8 +50,8 @@ public class ImageManager {
         return "admin/image-edit";
     }
 
-    @RequestMapping(value = "/edit/{id:\\d+}", method = {PUT, POST})
-    public String updateImage(@Valid @ModelAttribute("imageForm") ImageForm imageForm, BindingResult bindingResult, Model model) {
+    @RequestMapping(value = "/edit", method = {PUT, POST})
+    public String updateImage(@Validated(IdGroup.class) @ModelAttribute("image") ImageForm imageForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "admin/image-edit";
         }

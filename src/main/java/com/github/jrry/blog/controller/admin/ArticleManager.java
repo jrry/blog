@@ -2,14 +2,16 @@ package com.github.jrry.blog.controller.admin;
 
 import com.github.jrry.blog.entity.ArticleEntity;
 import com.github.jrry.blog.entity.ImageEntity;
+import com.github.jrry.blog.forms.groups.IdGroup;
 import com.github.jrry.blog.service.CategoryService;
-import com.github.jrry.blog.utils.PaginationUtil;
+import com.github.jrry.blog.utils.PaginationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.github.jrry.blog.forms.ArticleForm;
 import com.github.jrry.blog.service.ArticleService;
@@ -35,7 +37,7 @@ public class ArticleManager {
     public String getArticles(Model model, @RequestParam(defaultValue = "0") int page) {
         Page<ArticleEntity> articles = articleService.getArticles(page);
         model.addAttribute("articles", articles);
-        model.addAttribute("paginationNumbers", PaginationUtil.generateThreeNumbers(articles));
+        model.addAttribute("paginationNumbers", PaginationUtils.generateThreeNumbers(articles));
         return "admin/article-list";
     }
 
@@ -65,8 +67,8 @@ public class ArticleManager {
         return "admin/article-edit";
     }
 
-    @RequestMapping(value = "/edit/{id:\\d+}", method = {PUT, POST})
-    public String updateArticle(@Valid @ModelAttribute("article") ArticleForm articleForm, BindingResult bindingResult, Model model) {
+    @RequestMapping(value = "/edit", method = {PUT, POST})
+    public String updateArticle(@Validated(IdGroup.class) @ModelAttribute("article") ArticleForm articleForm, BindingResult bindingResult, Model model) {
         ImageEntity imageEntity = checkImageError(articleForm.getImageId(), bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.getCategories());
@@ -77,7 +79,7 @@ public class ArticleManager {
     }
 
     private ImageEntity checkImageError(Long id, BindingResult bindingResult) {
-        Optional<ImageEntity> optionalImageEntity = imageService.maybeImageById(id);
+        Optional<ImageEntity> optionalImageEntity = imageService.optionalImageById(id);
         if (!optionalImageEntity.isPresent()) {
             bindingResult.addError(new FieldError("article", "imageId", "Image not found"));
         }

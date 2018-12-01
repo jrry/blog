@@ -37,7 +37,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Optional<ImageEntity> maybeImageById(Long id) {
+    public Optional<ImageEntity> optionalImageById(Long id) {
         if (Objects.isNull(id))
             return Optional.empty();
         return imageRepository.findById(id);

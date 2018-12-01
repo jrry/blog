@@ -11,7 +11,7 @@ public interface ImageService {
 
     ImageEntity getImageById(Long id);
 
-    Optional<ImageEntity> maybeImageById(Long id);
+    Optional<ImageEntity> optionalImageById(Long id);
 
     ImageForm getImageFormById(Long id);
 

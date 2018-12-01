@@ -2,7 +2,7 @@ package com.github.jrry.blog.utils;
 
 import org.springframework.data.domain.Page;
 
-public final class PaginationUtil {
+public final class PaginationUtils {
 
     public static <T> int[] generateThreeNumbers(Page<T> page) {
         int prev = page.getNumber();
