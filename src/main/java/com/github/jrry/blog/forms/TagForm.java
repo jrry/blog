@@ -15,15 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.jrry.blog.repository;
+package com.github.jrry.blog.forms;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import com.github.jrry.blog.entity.ConfigEntity;
+import com.github.jrry.blog.forms.groups.IdGroup;
+import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Jarosław Pawłowski
  */
-@Repository
-public interface ConfigRepository extends JpaRepository<ConfigEntity, Long> {
+@Data
+public class TagForm {
+    @NotNull(groups = IdGroup.class)
+    private Long id;
+
+    @NotBlank
+    private String name;
+
+    private String cssClass;
 }
