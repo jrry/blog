@@ -17,17 +17,17 @@
 
 package com.github.jrry.blog.service;
 
+import com.github.jrry.blog.common.errors.NotFoundException;
 import com.github.jrry.blog.forms.TagForm;
 import com.github.jrry.blog.repository.TagRepository;
 import com.github.jrry.blog.utils.ValidationUtils;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.github.jrry.blog.entity.TagEntity;
-
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,10 +38,16 @@ import java.util.Set;
 public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
+    private final ModelMapper mapper;
 
     @Override
     public Page<TagEntity> getTags(int page) {
         return ValidationUtils.pageValidation(tagRepository::findAllByOrderByName, page);
+    }
+
+    @Override
+    public TagEntity getTagById(Long id) {
+        return tagRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
@@ -56,12 +62,18 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional
     public void updateTag(TagForm tagForm) {
-
+        TagEntity tagEntity = getTagById(tagForm.getId());
+        mapper.map(tagForm, tagEntity);
+        tagRepository.save(tagEntity);
     }
 
     @Override
+    @Transactional
     public void saveTag(TagForm tagForm) {
-
+        TagEntity tagEntity = mapper.map(tagForm, TagEntity.class);
+        //TODO: unique name
+        tagRepository.save(tagEntity);
     }
 }

@@ -45,19 +45,19 @@ public class ImageManager {
     @GetMapping("/list")
     public String getImages(Model model, @RequestParam(defaultValue = "0") int page) {
         model.addAttribute("images", imageService.getImages(page));
-        return "admin/image-list";
+        return "admin/image/image-list";
     }
 
     @GetMapping("/new")
     public String getImageDetails(Model model) {
         model.addAttribute("image", new ImageForm());
-        return "admin/image-new";
+        return "admin/image/image-new";
     }
 
     @PostMapping("/new")
     public String saveImage(@Valid @ModelAttribute("image") ImageForm imageForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "admin/image-new";
+            return "admin/image/image-new";
         }
         imageService.saveImage(imageForm);
         return "redirect:/adm/image/list";
@@ -67,13 +67,13 @@ public class ImageManager {
     public String editImage(@PathVariable("id") Long imageId, Model model) {
         ImageForm imageForm = imageService.getImageFormById(imageId);
         model.addAttribute("image", imageForm);
-        return "admin/image-edit";
+        return "admin/image/image-edit";
     }
 
     @RequestMapping(value = "/edit", method = {PUT, POST})
     public String updateImage(@Validated(IdGroup.class) @ModelAttribute("image") ImageForm imageForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "admin/image-edit";
+            return "admin/image/image-edit";
         }
         imageService.updateImage(imageForm);
         return "redirect:/adm/image/list";

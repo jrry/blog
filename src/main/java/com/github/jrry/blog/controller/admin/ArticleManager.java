@@ -58,14 +58,14 @@ public class ArticleManager {
         Page<ArticleEntity> articles = articleService.getArticles(page);
         model.addAttribute("articles", articles);
         model.addAttribute("paginationNumbers", PaginationUtils.generateThreeNumbers(articles));
-        return "admin/article-list";
+        return "admin/article/article-list";
     }
 
     @GetMapping("/new")
     public String getArticleDetails(Model model) {
         model.addAttribute("categories", categoryService.getCategories());
         model.addAttribute("article", new ArticleForm());
-        return "admin/article-new";
+        return "admin/article/article-new";
     }
 
     @PostMapping("/new")
@@ -73,7 +73,7 @@ public class ArticleManager {
         ImageEntity imageEntity = checkImageError(articleForm.getImageId(), bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.getCategories());
-            return "admin/article-new";
+            return "admin/article/article-new";
         }
         articleService.saveArticle(articleForm, imageEntity);
         return "redirect:/adm/article/list";
@@ -84,7 +84,7 @@ public class ArticleManager {
         ArticleForm articleForm = articleService.getArticleFormById(articleId);
         model.addAttribute("categories", categoryService.getCategories());
         model.addAttribute("article", articleForm);
-        return "admin/article-edit";
+        return "admin/article/article-edit";
     }
 
     @RequestMapping(value = "/edit", method = {PUT, POST})
@@ -92,7 +92,7 @@ public class ArticleManager {
         ImageEntity imageEntity = checkImageError(articleForm.getImageId(), bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.getCategories());
-            return "admin/article-edit";
+            return "admin/article/article-edit";
         }
         articleService.updateArticle(articleForm, imageEntity);
         return "redirect:/adm/article/list";

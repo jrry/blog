@@ -20,6 +20,7 @@ package com.github.jrry.blog.service;
 import com.github.jrry.blog.forms.CategoryForm;
 import com.github.jrry.blog.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import com.github.jrry.blog.common.errors.NotFoundException;
 import com.github.jrry.blog.entity.CategoryEntity;
@@ -35,6 +36,7 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ModelMapper mapper;
 
     //TODO: exceptiony mogłby być bardziej szczegółowe
     @Override
@@ -51,11 +53,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public void updateCategory(CategoryForm categoryForm) {
         CategoryEntity categoryEntity = getCategoryById(categoryForm.getId());
+        mapper.map(categoryForm, categoryEntity);
+        categoryRepository.save(categoryEntity);
     }
 
     @Override
     @Transactional
     public void saveCategory(CategoryForm categoryForm) {
-
+        CategoryEntity categoryEntity = mapper.map(categoryForm, CategoryEntity.class);
+        //TODO: unique seoName
+        categoryRepository.save(categoryEntity);
     }
 }
