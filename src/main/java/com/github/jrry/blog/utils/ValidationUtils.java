@@ -38,9 +38,9 @@ public final class ValidationUtils {
             throw new NotFoundException();
     }
 
-    public static <T> Page<T> pageValidation(Function<Pageable, Page<T>> function, int pageNumber) {
+    public static <T> Page<T> pageValidation(Function<Pageable, Page<T>> function, int pageNumber, int pageSize) {
         notFoundWhenNegativePage(pageNumber);
-        Page<T> page = function.apply(PageRequest.of(pageNumber, 10));
+        Page<T> page = function.apply(PageRequest.of(pageNumber, pageSize));
         notFoundWhenPageIsEmpty(page);
         return page;
     }

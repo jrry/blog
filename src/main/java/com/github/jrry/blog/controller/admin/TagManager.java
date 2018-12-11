@@ -17,8 +17,10 @@
 
 package com.github.jrry.blog.controller.admin;
 
-import com.github.jrry.blog.entity.ImageEntity;
+import com.github.jrry.blog.entity.TagEntity;
+import com.github.jrry.blog.forms.TagForm;
 import com.github.jrry.blog.forms.groups.IdGroup;
+import com.github.jrry.blog.service.TagService;
 import com.github.jrry.blog.utils.PaginationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,8 +29,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.github.jrry.blog.forms.ImageForm;
-import com.github.jrry.blog.service.ImageService;
 
 import javax.validation.Valid;
 
@@ -40,47 +40,46 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
  */
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/adm/image")
-public class ImageManager {
+@RequestMapping("/adm/tag")
+public class TagManager {
 
-    private final ImageService imageService;
+    private final TagService tagService;
 
     @GetMapping("/list")
-    public String getImages(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<ImageEntity> images = imageService.getImages(page);
-        model.addAttribute("images", images);
-        model.addAttribute("paginationNumbers", PaginationUtils.generateThreeNumbers(images));
-        return "admin/image/image-list";
+    public String getTags(Model model, @RequestParam(defaultValue = "0") int page) {
+        Page<TagEntity> tags = tagService.getTags(page);
+        model.addAttribute("tags", tags);
+        model.addAttribute("paginationNumbers", PaginationUtils.generateThreeNumbers(tags));
+        return "admin/tag/tag-list";
     }
 
     @GetMapping("/new")
-    public String getImageDetails(Model model) {
-        model.addAttribute("image", new ImageForm());
-        return "admin/image/image-new";
+    public String getTagDetails(Model model) {
+        model.addAttribute("tag", new TagForm());
+        return "admin/tag/tag-new";
     }
 
     @PostMapping("/new")
-    public String saveImage(@Valid @ModelAttribute("image") ImageForm imageForm, BindingResult bindingResult, Model model) {
+    public String saveTag(@Valid @ModelAttribute("tag") TagForm tagForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "admin/image/image-new";
+            return "admin/tag/tag-new";
         }
-        imageService.saveImage(imageForm);
-        return "redirect:/adm/image/list";
+        tagService.saveTag(tagForm);
+        return "redirect:/adm/tag/list";
     }
 
     @GetMapping("/edit/{id:\\d+}")
-    public String editImage(@PathVariable("id") Long imageId, Model model) {
-        ImageForm imageForm = imageService.getImageFormById(imageId);
-        model.addAttribute("image", imageForm);
-        return "admin/image/image-edit";
+    public String editTag(@PathVariable("id") Long tagId, Model model) {
+        model.addAttribute("tag", tagService.getTagFormById(tagId));
+        return "admin/tag/tag-edit";
     }
 
     @RequestMapping(value = "/edit", method = {PUT, POST})
-    public String updateImage(@Validated(IdGroup.class) @ModelAttribute("image") ImageForm imageForm, BindingResult bindingResult, Model model) {
+    public String updateTag(@Validated(IdGroup.class) @ModelAttribute("tag") TagForm tagForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "admin/image/image-edit";
+            return "admin/tag/tag-edit";
         }
-        imageService.updateImage(imageForm);
-        return "redirect:/adm/image/list";
+        tagService.updateTag(tagForm);
+        return "redirect:/adm/tag/list";
     }
 }

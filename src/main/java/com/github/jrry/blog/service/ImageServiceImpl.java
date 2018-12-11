@@ -21,7 +21,6 @@ import com.github.jrry.blog.entity.ImageEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.github.jrry.blog.common.errors.NotFoundException;
@@ -45,10 +44,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Page<ImageEntity> getImages(int page) {
-        ValidationUtils.notFoundWhenNegativePage(page);
-        Page<ImageEntity> imagePage = imageRepository.findAllByOrderByCreatedDesc(PageRequest.of(page, 12));
-        ValidationUtils.notFoundWhenPageIsEmpty(imagePage);
-        return imagePage;
+        return ValidationUtils.pageValidation(imageRepository::findAllByOrderByCreatedDesc, page, 12);
     }
 
     @Override
@@ -64,7 +60,6 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    @Transactional
     public ImageForm getImageFormById(Long id) {
         return mapper.map(getImageById(id), ImageForm.class);
     }

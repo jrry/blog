@@ -27,9 +27,11 @@ import java.util.Set;
  * @author Jarosław Pawłowski
  */
 public interface TagService {
-    Page<TagEntity> getTags(int page);
-
     TagEntity getTagById(Long id);
+
+    TagForm getTagFormById(Long id);
+
+    Page<TagEntity> getTags(int page);
 
     Set<TagEntity> createOrGetTags(String names);
 

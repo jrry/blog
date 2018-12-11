@@ -46,12 +46,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Page<ArticleEntity> getArticles(int page) {
-        return ValidationUtils.pageValidation(articleRepository::findAllByOrderByCreatedDesc, page);
+        return ValidationUtils.pageValidation(articleRepository::findAllByOrderByCreatedDesc, page, 15);
     }
 
     @Override
     public Page<ArticleEntity> getPublishedArticles(int page) {
-        return articleRepository.findByStatusOrderByCreatedDesc(ArticleStatusEnum.PUBLISHED, PageRequest.of(page, 10));
+        return articleRepository.findByStatusOrderByCreatedDesc(ArticleStatusEnum.PUBLISHED, PageRequest.of(page, 15));
     }
 
     @Override

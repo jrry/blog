@@ -19,8 +19,11 @@ package com.github.jrry.blog.service;
 
 import com.github.jrry.blog.forms.CategoryForm;
 import com.github.jrry.blog.repository.CategoryRepository;
+import com.github.jrry.blog.utils.ValidationUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.github.jrry.blog.common.errors.NotFoundException;
 import com.github.jrry.blog.entity.CategoryEntity;
@@ -45,8 +48,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public CategoryForm getCategoryFormById(Long id) {
+        return mapper.map(getCategoryById(id), CategoryForm.class);
+    }
+
+    @Override
     public List<CategoryEntity> getCategories() {
-        return categoryRepository.findAll();
+        return categoryRepository.findAllByOrderBySeoName();
+    }
+
+    @Override
+    public Page<CategoryEntity> getCategories(int page) {
+        return ValidationUtils.pageValidation(categoryRepository::findAllByOrderBySeoName, page, 15);
     }
 
     @Override

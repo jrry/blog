@@ -19,6 +19,7 @@ package com.github.jrry.blog.service;
 
 import com.github.jrry.blog.entity.CategoryEntity;
 import com.github.jrry.blog.forms.CategoryForm;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -27,6 +28,10 @@ import java.util.List;
  */
 public interface CategoryService {
     CategoryEntity getCategoryById(Long id);
+
+    CategoryForm getCategoryFormById(Long id);
+
+    Page<CategoryEntity> getCategories(int page);
 
     List<CategoryEntity> getCategories();
 

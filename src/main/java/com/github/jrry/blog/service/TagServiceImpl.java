@@ -41,13 +41,18 @@ public class TagServiceImpl implements TagService {
     private final ModelMapper mapper;
 
     @Override
-    public Page<TagEntity> getTags(int page) {
-        return ValidationUtils.pageValidation(tagRepository::findAllByOrderByName, page);
+    public TagEntity getTagById(Long id) {
+        return tagRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
-    public TagEntity getTagById(Long id) {
-        return tagRepository.findById(id).orElseThrow(NotFoundException::new);
+    public TagForm getTagFormById(Long id) {
+        return mapper.map(getTagById(id), TagForm.class);
+    }
+
+    @Override
+    public Page<TagEntity> getTags(int page) {
+        return ValidationUtils.pageValidation(tagRepository::findAllByOrderByName, page, 15);
     }
 
     @Override
