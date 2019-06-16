@@ -17,8 +17,8 @@
 
 package com.github.jrry.blog.controller.admin;
 
-import com.github.jrry.blog.entity.ArticleEntity;
-import com.github.jrry.blog.entity.ImageEntity;
+import com.github.jrry.blog.entity.Article;
+import com.github.jrry.blog.entity.Image;
 import com.github.jrry.blog.forms.groups.IdGroup;
 import com.github.jrry.blog.service.CategoryService;
 import com.github.jrry.blog.utils.PaginationUtils;
@@ -55,7 +55,7 @@ public class ArticleManager {
 
     @GetMapping("/list")
     public String getArticles(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<ArticleEntity> articles = articleService.getArticles(page);
+        Page<Article> articles = articleService.getArticles(page);
         model.addAttribute("articles", articles);
         model.addAttribute("paginationNumbers", PaginationUtils.generateThreeNumbers(articles));
         return "admin/article/article-list";
@@ -70,12 +70,12 @@ public class ArticleManager {
 
     @PostMapping("/new")
     public String saveArticle(@Valid @ModelAttribute("article") ArticleForm articleForm, BindingResult bindingResult, Model model) {
-        ImageEntity imageEntity = checkImageError(articleForm.getImageId(), bindingResult);
+        Image image = checkImageError(articleForm.getImageId(), bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.getCategories());
             return "admin/article/article-new";
         }
-        articleService.saveArticle(articleForm, imageEntity);
+        articleService.saveArticle(articleForm, image);
         return "redirect:/adm/article/list";
     }
 
@@ -89,18 +89,18 @@ public class ArticleManager {
 
     @RequestMapping(value = "/edit", method = {PUT, POST})
     public String updateArticle(@Validated(IdGroup.class) @ModelAttribute("article") ArticleForm articleForm, BindingResult bindingResult, Model model) {
-        ImageEntity imageEntity = checkImageError(articleForm.getImageId(), bindingResult);
+        Image image = checkImageError(articleForm.getImageId(), bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.getCategories());
             return "admin/article/article-edit";
         }
-        articleService.updateArticle(articleForm, imageEntity);
+        articleService.updateArticle(articleForm, image);
         return "redirect:/adm/article/list";
     }
 
-    private ImageEntity checkImageError(Long id, BindingResult bindingResult) {
-        Optional<ImageEntity> optionalImageEntity = imageService.optionalImageById(id);
-        if (!optionalImageEntity.isPresent()) {
+    private Image checkImageError(Long id, BindingResult bindingResult) {
+        Optional<Image> optionalImageEntity = imageService.optionalImageById(id);
+        if (optionalImageEntity.isEmpty()) {
             bindingResult.addError(new FieldError("article", "imageId", "Image not found"));
         }
         return optionalImageEntity.orElse(null);

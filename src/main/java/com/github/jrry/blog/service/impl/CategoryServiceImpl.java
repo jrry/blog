@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Jarosław Pawłowski
+ * Copyright (c) 2019 Jarosław Pawłowski
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,21 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.jrry.blog.service;
+package com.github.jrry.blog.service.impl;
 
 import com.github.jrry.blog.forms.CategoryForm;
 import com.github.jrry.blog.repository.CategoryRepository;
+import com.github.jrry.blog.service.CategoryService;
 import com.github.jrry.blog.utils.ValidationUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.github.jrry.blog.common.errors.NotFoundException;
-import com.github.jrry.blog.entity.CategoryEntity;
+import com.github.jrry.blog.entity.Category;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Jarosław Pawłowski
@@ -43,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     //TODO: exceptiony mogłby być bardziej szczegółowe
     @Override
-    public CategoryEntity getCategoryById(Long id) {
+    public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
@@ -53,28 +54,34 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryEntity> getCategories() {
+    public List<Category> getCategories() {
         return categoryRepository.findAllByOrderBySeoName();
     }
 
     @Override
-    public Page<CategoryEntity> getCategories(int page) {
+    public Page<Category> getCategories(int page) {
         return ValidationUtils.pageValidation(categoryRepository::findAllByOrderBySeoName, page, 15);
     }
 
     @Override
     @Transactional
-    public void updateCategory(CategoryForm categoryForm) {
-        CategoryEntity categoryEntity = getCategoryById(categoryForm.getId());
-        mapper.map(categoryForm, categoryEntity);
-        categoryRepository.save(categoryEntity);
+    public Optional<Category> updateCategory(CategoryForm categoryForm) {
+        Category category = getCategoryById(categoryForm.getId());
+        if (!categoryForm.getSeoName().equals(category.getSeoName())
+                && categoryRepository.findBySeoName(categoryForm.getSeoName()).isPresent()) {
+            return Optional.empty();
+        }
+        mapper.map(categoryForm, category);
+        return Optional.of(categoryRepository.save(category));
     }
 
     @Override
     @Transactional
-    public void saveCategory(CategoryForm categoryForm) {
-        CategoryEntity categoryEntity = mapper.map(categoryForm, CategoryEntity.class);
-        //TODO: unique seoName
-        categoryRepository.save(categoryEntity);
+    public Optional<Category> saveCategory(CategoryForm categoryForm) {
+        if (categoryRepository.findBySeoName(categoryForm.getSeoName()).isPresent()) {
+            return Optional.empty();
+        }
+        Category category = mapper.map(categoryForm, Category.class);
+        return Optional.of(categoryRepository.save(category));
     }
 }

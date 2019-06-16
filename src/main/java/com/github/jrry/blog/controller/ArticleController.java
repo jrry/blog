@@ -17,7 +17,7 @@
 
 package com.github.jrry.blog.controller;
 
-import com.github.jrry.blog.entity.ArticleEntity;
+import com.github.jrry.blog.entity.Article;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +36,7 @@ public class ArticleController {
 
     @GetMapping("/{seoname:[a-z0-9-]+}/{id:\\d+}")
     public String article(@PathVariable("seoname") String seoname, @PathVariable("id") Long id, Model model) {
-        ArticleEntity post = articleService.getArticleByIdWithSeoLinkCheck(id, seoname);
+        Article post = articleService.getArticleByIdWithSeoLinkCheck(id, seoname);
         model.addAttribute("article", post);
         return "article";
     }

@@ -36,7 +36,7 @@ import java.util.Set;
 @Getter @Setter
 @EqualsAndHashCode(exclude = {"avatar", "posts", "links"})
 @ToString(exclude = {"avatar", "posts", "links"})
-public class UserEntity implements Serializable {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -58,7 +58,7 @@ public class UserEntity implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
-    private ImageEntity avatar;
+    private Image avatar;
 
     @Column(nullable = false)
     private boolean enabled;
@@ -73,8 +73,8 @@ public class UserEntity implements Serializable {
     private LocalDateTime registerDate;
 
     @OneToMany(mappedBy = "author")
-    private Set<ArticleEntity> posts = new HashSet<>();
+    private Set<Article> posts = new HashSet<>();
 
     @OneToMany(mappedBy = "owner")
-    private Set<ImageEntity> links = new HashSet<>();
+    private Set<Image> links = new HashSet<>();
 }

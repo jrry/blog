@@ -17,8 +17,8 @@
 
 package com.github.jrry.blog.service;
 
-import com.github.jrry.blog.entity.ArticleEntity;
-import com.github.jrry.blog.entity.ImageEntity;
+import com.github.jrry.blog.entity.Article;
+import com.github.jrry.blog.entity.Image;
 import org.springframework.data.domain.Page;
 import com.github.jrry.blog.forms.ArticleForm;
 
@@ -26,17 +26,17 @@ import com.github.jrry.blog.forms.ArticleForm;
  * @author Jarosław Pawłowski
  */
 public interface ArticleService {
-    Page<ArticleEntity> getArticles(int page);
+    Page<Article> getArticles(int page);
 
-    Page<ArticleEntity> getPublishedArticles(int page);
+    Page<Article> getPublishedArticles(int page);
 
-    ArticleEntity getArticleById(Long id);
+    Article getArticleById(Long id);
 
-    ArticleEntity getArticleByIdWithSeoLinkCheck(Long id, String seoname);
+    Article getArticleByIdWithSeoLinkCheck(Long id, String seoname);
 
     ArticleForm getArticleFormById(Long id);
 
-    void updateArticle(ArticleForm articleForm, ImageEntity imageEntity);
+    void updateArticle(ArticleForm articleForm, Image image);
 
-    void saveArticle(ArticleForm articleForm, ImageEntity imageEntity);
+    void saveArticle(ArticleForm articleForm, Image image);
 }

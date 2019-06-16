@@ -17,7 +17,7 @@
 
 package com.github.jrry.blog.controller.admin;
 
-import com.github.jrry.blog.entity.TagEntity;
+import com.github.jrry.blog.entity.Tag;
 import com.github.jrry.blog.forms.TagForm;
 import com.github.jrry.blog.forms.groups.IdGroup;
 import com.github.jrry.blog.service.TagService;
@@ -47,7 +47,7 @@ public class TagManager {
 
     @GetMapping("/list")
     public String getTags(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<TagEntity> tags = tagService.getTags(page);
+        Page<Tag> tags = tagService.getTags(page);
         model.addAttribute("tags", tags);
         model.addAttribute("paginationNumbers", PaginationUtils.generateThreeNumbers(tags));
         return "admin/tag/tag-list";

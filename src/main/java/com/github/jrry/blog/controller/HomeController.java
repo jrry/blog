@@ -17,7 +17,7 @@
 
 package com.github.jrry.blog.controller;
 
-import com.github.jrry.blog.entity.ArticleEntity;
+import com.github.jrry.blog.entity.Article;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -37,7 +37,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        Page<ArticleEntity> page = articleService.getPublishedArticles(0);
+        Page<Article> page = articleService.getPublishedArticles(0);
         model.addAttribute("articles", page.getContent());
         return "index";
     }
@@ -50,7 +50,7 @@ public class HomeController {
     @GetMapping("/page/{number}")
     public String homeWithPageNumber(Model model, @PathVariable("number") int number) {
         if (number < 1) return "redirect:/";
-        Page<ArticleEntity> page = articleService.getPublishedArticles(number - 1);
+        Page<Article> page = articleService.getPublishedArticles(number - 1);
         if (number > page.getTotalPages()) return "redirect:/";
         model.addAttribute("articles", page);
         return "index";

@@ -17,7 +17,7 @@
 
 package com.github.jrry.blog.utils;
 
-import com.github.jrry.blog.entity.UserEntity;
+import com.github.jrry.blog.entity.User;
 import com.github.jrry.blog.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,7 +44,7 @@ public final class SecurityUtils {
                 });
     }
 
-    public static UserEntity getCurrentUser(UserRepository userRepository) {
+    public static User getCurrentUser(UserRepository userRepository) {
         return getCurrentUserLogin().flatMap(userRepository::findByUsername).orElseThrow(NotFoundException::new);
     }
 }

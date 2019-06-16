@@ -17,25 +17,26 @@
 
 package com.github.jrry.blog.service;
 
-import com.github.jrry.blog.entity.TagEntity;
+import com.github.jrry.blog.entity.Tag;
 import com.github.jrry.blog.forms.TagForm;
 import org.springframework.data.domain.Page;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
  * @author Jarosław Pawłowski
  */
 public interface TagService {
-    TagEntity getTagById(Long id);
+    Tag getTagById(Long id);
 
     TagForm getTagFormById(Long id);
 
-    Page<TagEntity> getTags(int page);
+    Page<Tag> getTags(int page);
 
-    Set<TagEntity> createOrGetTags(String names);
+    Set<Tag> createOrGetTags(String names);
 
-    void updateTag(TagForm tagForm);
+    Optional<Tag> updateTag(TagForm tagForm);
 
-    void saveTag(TagForm tagForm);
+    Optional<Tag> saveTag(TagForm tagForm);
 }

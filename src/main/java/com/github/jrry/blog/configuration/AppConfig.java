@@ -17,8 +17,8 @@
 
 package com.github.jrry.blog.configuration;
 
-import com.github.jrry.blog.entity.ArticleEntity;
-import com.github.jrry.blog.entity.TagEntity;
+import com.github.jrry.blog.entity.Article;
+import com.github.jrry.blog.entity.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -50,12 +50,12 @@ public class AppConfig implements WebMvcConfigurer {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-        Converter<Set<TagEntity>, String> setToStringComma =
-                source -> source.getSource().stream().map(TagEntity::getName).collect(Collectors.joining(","));
+        Converter<Set<Tag>, String> setToStringComma =
+                source -> source.getSource().stream().map(Tag::getName).collect(Collectors.joining(","));
 
-        modelMapper.typeMap(ArticleEntity.class, ArticleForm.class)
+        modelMapper.typeMap(Article.class, ArticleForm.class)
                 .addMappings(mapper -> {
-                    mapper.using(setToStringComma).map(ArticleEntity::getTags, ArticleForm::setTags);
+                    mapper.using(setToStringComma).map(Article::getTags, ArticleForm::setTags);
                     mapper.map(articleEntity -> Long.toString(articleEntity.getCategory().getId()), ArticleForm::setCategory);
                     mapper.map(articleEntity -> articleEntity.getImage().getId(), ArticleForm::setImageId);
                 });

@@ -17,37 +17,29 @@
 
 package com.github.jrry.blog.entity;
 
-import lombok.*;
-
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Jarosław Pawłowski
  */
 @Entity
-@Table(name = "tags")
+@Table(name = "configs")
 @Getter @Setter
-@EqualsAndHashCode(exclude = "posts")
-@ToString(exclude = "posts")
-@NoArgsConstructor
-public class TagEntity implements Serializable {
+@EqualsAndHashCode
+@ToString
+public class Config implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(length = 50, nullable = false, unique = true)
     private String name;
 
-    @Column(length = 50)
-    private String cssClass;
-
-    @ManyToMany(mappedBy = "tags")
-    private Set<ArticleEntity> posts = new HashSet<>();
-
-    public TagEntity(String name) {
-        this.name = name;
-    }
+    @Column(nullable = false)
+    private String value;
 }

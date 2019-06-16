@@ -21,7 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.github.jrry.blog.entity.TagEntity;
+import com.github.jrry.blog.entity.Tag;
 
 import java.util.Optional;
 
@@ -29,7 +29,8 @@ import java.util.Optional;
  * @author Jarosław Pawłowski
  */
 @Repository
-public interface TagRepository extends JpaRepository<TagEntity, Long> {
-    Optional<TagEntity> findByName(String name);
-    Page<TagEntity> findAllByOrderByName(Pageable pageable);
+public interface TagRepository extends JpaRepository<Tag, Long> {
+    Optional<Tag> findByName(String name);
+
+    Page<Tag> findAllByOrderByName(Pageable pageable);
 }

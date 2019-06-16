@@ -17,7 +17,7 @@
 
 package com.github.jrry.blog.service;
 
-import com.github.jrry.blog.entity.ImageEntity;
+import com.github.jrry.blog.entity.Image;
 import org.springframework.data.domain.Page;
 import com.github.jrry.blog.forms.ImageForm;
 
@@ -27,11 +27,11 @@ import java.util.Optional;
  * @author Jarosław Pawłowski
  */
 public interface ImageService {
-    Page<ImageEntity> getImages(int page);
+    Page<Image> getImages(int page);
 
-    ImageEntity getImageById(Long id);
+    Image getImageById(Long id);
 
-    Optional<ImageEntity> optionalImageById(Long id);
+    Optional<Image> optionalImageById(Long id);
 
     ImageForm getImageFormById(Long id);
 

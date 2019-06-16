@@ -21,16 +21,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.github.jrry.blog.entity.CategoryEntity;
+import com.github.jrry.blog.entity.Category;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Jarosław Pawłowski
  */
 @Repository
-public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
-    List<CategoryEntity> findAllByOrderBySeoName();
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+    Optional<Category> findBySeoName(String seoName);
 
-    Page<CategoryEntity> findAllByOrderBySeoName(Pageable pageable);
+    List<Category> findAllByOrderBySeoName();
+
+    Page<Category> findAllByOrderBySeoName(Pageable pageable);
 }

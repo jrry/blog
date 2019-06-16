@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Jarosław Pawłowski
+ * Copyright (c) 2019 Jarosław Pawłowski
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.jrry.blog.service;
+package com.github.jrry.blog.service.impl;
 
-import com.github.jrry.blog.entity.ImageEntity;
+import com.github.jrry.blog.entity.Image;
+import com.github.jrry.blog.service.ImageService;
+import com.github.jrry.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -43,17 +45,17 @@ public class ImageServiceImpl implements ImageService {
     private final ModelMapper mapper;
 
     @Override
-    public Page<ImageEntity> getImages(int page) {
+    public Page<Image> getImages(int page) {
         return ValidationUtils.pageValidation(imageRepository::findAllByOrderByCreatedDesc, page, 12);
     }
 
     @Override
-    public ImageEntity getImageById(Long id) {
+    public Image getImageById(Long id) {
         return imageRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
-    public Optional<ImageEntity> optionalImageById(Long id) {
+    public Optional<Image> optionalImageById(Long id) {
         if (Objects.isNull(id))
             return Optional.empty();
         return imageRepository.findById(id);
@@ -67,17 +69,17 @@ public class ImageServiceImpl implements ImageService {
     @Override
     @Transactional
     public void updateImage(ImageForm imageForm) {
-        ImageEntity imageEntity = getImageById(imageForm.getId());
-        mapper.map(imageForm, imageEntity);
-        imageEntity.setOwner(userService.getAuthenticatedUser());
-        imageRepository.save(imageEntity);
+        Image image = getImageById(imageForm.getId());
+        mapper.map(imageForm, image);
+        image.setOwner(userService.getAuthenticatedUser());
+        imageRepository.save(image);
     }
 
     @Override
     @Transactional
     public void saveImage(ImageForm imageForm) {
-        ImageEntity imageEntity = mapper.map(imageForm, ImageEntity.class);
-        imageEntity.setOwner(userService.getAuthenticatedUser());
-        imageRepository.save(imageEntity);
+        Image image = mapper.map(imageForm, Image.class);
+        image.setOwner(userService.getAuthenticatedUser());
+        imageRepository.save(image);
     }
 }

@@ -17,7 +17,7 @@
 
 package com.github.jrry.blog.controller.admin;
 
-import com.github.jrry.blog.entity.CategoryEntity;
+import com.github.jrry.blog.entity.Category;
 import com.github.jrry.blog.forms.CategoryForm;
 import com.github.jrry.blog.forms.groups.IdGroup;
 import com.github.jrry.blog.service.CategoryService;
@@ -47,7 +47,7 @@ public class CategoryManager {
 
     @GetMapping("/list")
     public String getCategories(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<CategoryEntity> categories = categoryService.getCategories(page);
+        Page<Category> categories = categoryService.getCategories(page);
         model.addAttribute("categories", categories);
         model.addAttribute("paginationNumbers", PaginationUtils.generateThreeNumbers(categories));
         return "admin/category/category-list";

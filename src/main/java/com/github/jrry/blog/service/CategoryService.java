@@ -17,25 +17,26 @@
 
 package com.github.jrry.blog.service;
 
-import com.github.jrry.blog.entity.CategoryEntity;
+import com.github.jrry.blog.entity.Category;
 import com.github.jrry.blog.forms.CategoryForm;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Jarosław Pawłowski
  */
 public interface CategoryService {
-    CategoryEntity getCategoryById(Long id);
+    Category getCategoryById(Long id);
 
     CategoryForm getCategoryFormById(Long id);
 
-    Page<CategoryEntity> getCategories(int page);
+    Page<Category> getCategories(int page);
 
-    List<CategoryEntity> getCategories();
+    List<Category> getCategories();
 
-    void updateCategory(CategoryForm categoryForm);
+    Optional<Category> updateCategory(CategoryForm categoryForm);
 
-    void saveCategory(CategoryForm categoryForm);
+    Optional<Category> saveCategory(CategoryForm categoryForm);
 }

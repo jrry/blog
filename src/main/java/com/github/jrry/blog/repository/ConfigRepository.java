@@ -19,11 +19,11 @@ package com.github.jrry.blog.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.github.jrry.blog.entity.ConfigEntity;
+import com.github.jrry.blog.entity.Config;
 
 /**
  * @author Jarosław Pawłowski
  */
 @Repository
-public interface ConfigRepository extends JpaRepository<ConfigEntity, Long> {
+public interface ConfigRepository extends JpaRepository<Config, Long> {
 }

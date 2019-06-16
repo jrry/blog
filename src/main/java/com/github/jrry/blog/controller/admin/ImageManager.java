@@ -17,7 +17,7 @@
 
 package com.github.jrry.blog.controller.admin;
 
-import com.github.jrry.blog.entity.ImageEntity;
+import com.github.jrry.blog.entity.Image;
 import com.github.jrry.blog.forms.groups.IdGroup;
 import com.github.jrry.blog.utils.PaginationUtils;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +47,7 @@ public class ImageManager {
 
     @GetMapping("/list")
     public String getImages(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<ImageEntity> images = imageService.getImages(page);
+        Page<Image> images = imageService.getImages(page);
         model.addAttribute("images", images);
         model.addAttribute("paginationNumbers", PaginationUtils.generateThreeNumbers(images));
         return "admin/image/image-list";

@@ -37,7 +37,7 @@ import java.util.Set;
 @Getter @Setter
 @EqualsAndHashCode(exclude = {"articles", "avatars", "owner"})
 @ToString(exclude = {"articles", "avatars"})
-public class ImageEntity implements Serializable {
+public class Image implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,12 +55,12 @@ public class ImageEntity implements Serializable {
     private Instant created;
 
     @OneToMany(mappedBy = "image")
-    private Set<ArticleEntity> articles = new HashSet<>();
+    private Set<Article> articles = new HashSet<>();
 
     @OneToMany(mappedBy = "avatar")
-    private Set<UserEntity> avatars = new HashSet<>();
+    private Set<User> avatars = new HashSet<>();
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
-    private UserEntity owner;
+    private User owner;
 }

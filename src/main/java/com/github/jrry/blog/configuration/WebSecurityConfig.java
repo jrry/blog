@@ -50,11 +50,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/adm/**").hasAuthority("admin")
-                .anyRequest().permitAll()
+                    .antMatchers("/adm/**").hasAuthority("admin")
+                    .anyRequest().permitAll()
                 .and()
-                .formLogin().loginPage("/login")
+                    .formLogin().loginPage("/login")
                 .and()
-                .httpBasic();
+                    .rememberMe()
+                        .key("key")
+                        .rememberMeCookieName("JTOKENID")
+                .and()
+                    .httpBasic();
     }
 }

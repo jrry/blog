@@ -34,7 +34,7 @@ import java.util.Set;
 @Getter @Setter
 @EqualsAndHashCode(exclude = "posts")
 @ToString(exclude = "posts")
-public class CategoryEntity implements Serializable {
+public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,5 +43,5 @@ public class CategoryEntity implements Serializable {
     private String seoName;
 
     @OneToMany(mappedBy = "category")
-    private Set<ArticleEntity> posts = new HashSet<>();
+    private Set<Article> posts = new HashSet<>();
 }

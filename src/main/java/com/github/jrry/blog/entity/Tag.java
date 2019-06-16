@@ -15,24 +15,39 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.jrry.blog.service;
+package com.github.jrry.blog.entity;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import com.github.jrry.blog.entity.UserEntity;
-import com.github.jrry.blog.repository.UserRepository;
-import com.github.jrry.blog.utils.SecurityUtils;
+import lombok.*;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Jarosław Pawłowski
  */
-@Service
-@RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
+@Entity
+@Table(name = "tags")
+@Getter @Setter
+@EqualsAndHashCode(exclude = "posts")
+@ToString(exclude = "posts")
+@NoArgsConstructor
+public class Tag implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Override
-    public UserEntity getAuthenticatedUser() {
-        return SecurityUtils.getCurrentUser(userRepository);
+    @Column(length = 50, nullable = false, unique = true)
+    private String name;
+
+    @Column(length = 50)
+    private String cssClass;
+
+    @ManyToMany(mappedBy = "tags")
+    private Set<Article> posts = new HashSet<>();
+
+    public Tag(String name) {
+        this.name = name;
     }
 }

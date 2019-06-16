@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import com.github.jrry.blog.enums.ArticleStatusEnum;
 
@@ -39,14 +40,15 @@ import java.util.Set;
 @Getter @Setter
 @EqualsAndHashCode(exclude = {"author", "category", "image", "tags"})
 @ToString(exclude = {"author", "tags"})
-public class ArticleEntity implements Serializable {
+@DynamicUpdate
+public class Article implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
-    private UserEntity author;
+    private User author;
 
     @Column(nullable = false)
     private String title;
@@ -60,7 +62,7 @@ public class ArticleEntity implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "image_id")
-    private ImageEntity image;
+    private Image image;
 
     @Column(nullable = false)
     private String seoLink;
@@ -78,11 +80,11 @@ public class ArticleEntity implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id")
-    private CategoryEntity category;
+    private Category category;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "article_tags",
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id", nullable = false))
-    private Set<TagEntity> tags = new HashSet<>();
+    private Set<Tag> tags = new HashSet<>();
 }

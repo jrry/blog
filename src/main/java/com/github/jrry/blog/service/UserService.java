@@ -17,11 +17,11 @@
 
 package com.github.jrry.blog.service;
 
-import com.github.jrry.blog.entity.UserEntity;
+import com.github.jrry.blog.entity.User;
 
 /**
  * @author Jarosław Pawłowski
  */
 public interface UserService {
-    UserEntity getAuthenticatedUser();
+    User getAuthenticatedUser();
 }

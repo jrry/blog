@@ -17,7 +17,7 @@
 
 package com.github.jrry.blog.repository;
 
-import com.github.jrry.blog.entity.ArticleEntity;
+import com.github.jrry.blog.entity.Article;
 import com.github.jrry.blog.enums.ArticleStatusEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,11 +30,11 @@ import java.util.Optional;
  * @author Jarosław Pawłowski
  */
 @Repository
-public interface ArticleRepository extends JpaRepository<ArticleEntity, Long> {
+public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-    Optional<ArticleEntity> findById(Long id);
+    Optional<Article> findById(Long id);
 
-    Page<ArticleEntity> findAllByOrderByCreatedDesc(Pageable pageable);
+    Page<Article> findAllByOrderByCreatedDesc(Pageable pageable);
 
-    Page<ArticleEntity> findByStatusOrderByCreatedDesc(ArticleStatusEnum status, Pageable pageable);
+    Page<Article> findByStatusOrderByCreatedDesc(ArticleStatusEnum status, Pageable pageable);
 }

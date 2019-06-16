@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Jarosław Pawłowski
+ * Copyright (c) 2019 Jarosław Pawłowski
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,31 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.jrry.blog.entity;
+package com.github.jrry.blog.service.impl;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import javax.persistence.*;
-import java.io.Serializable;
+import com.github.jrry.blog.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import com.github.jrry.blog.entity.User;
+import com.github.jrry.blog.repository.UserRepository;
+import com.github.jrry.blog.utils.SecurityUtils;
 
 /**
  * @author Jarosław Pawłowski
  */
-@Entity
-@Table(name = "configs")
-@Getter @Setter
-@EqualsAndHashCode
-@ToString
-public class ConfigEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@Service
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
 
-    @Column(length = 50, nullable = false, unique = true)
-    private String name;
-
-    @Column(nullable = false)
-    private String value;
+    @Override
+    public User getAuthenticatedUser() {
+        return SecurityUtils.getCurrentUser(userRepository);
+    }
 }
