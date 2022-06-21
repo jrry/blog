@@ -39,7 +39,7 @@
         <java.version>11</java.version>
         <lombok.version>1.18.8</lombok.version>
         <modelmapper.version>2.3.2</modelmapper.version>
-        <mysql.version>8.0.16</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
     </properties>
 
     <dependencies>
